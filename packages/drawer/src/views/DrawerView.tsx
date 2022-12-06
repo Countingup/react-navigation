@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { Dimensions, StyleSheet, ViewStyle } from 'react-native';
+import {
+  Dimensions,
+  EmitterSubscription,
+  StyleSheet,
+  ViewStyle,
+} from 'react-native';
 import {
   SceneView,
   ThemeColors,
@@ -92,7 +97,10 @@ export default class DrawerView extends React.PureComponent<Props, State> {
       this.handleDrawerOpen();
     }
 
-    Dimensions.addEventListener('change', this.updateWidth);
+    this.changeListener = (Dimensions.addEventListener(
+      'change',
+      this.updateWidth
+    ) as unknown) as EmitterSubscription;
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -109,8 +117,10 @@ export default class DrawerView extends React.PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    Dimensions.removeEventListener('change', this.updateWidth);
+    this.changeListener?.remove();
   }
+
+  changeListener: EmitterSubscription | undefined = undefined;
 
   context!: React.ContextType<typeof ThemeContext>;
 

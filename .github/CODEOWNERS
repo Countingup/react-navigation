@@ -1,0 +1,6 @@
+# CI owners
+/.semaphore/   @Countingup/security-approvers
+
+# Restrict changes to CODEOWNERS file itself
+/.github/CODEOWNERS   @Countingup/security-approvers
+
